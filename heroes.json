@@ -3,17 +3,20 @@
     {
       "id": "lina",
       "name": "Lina",
-      "transpose": 0
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/LinaRVC/resolve/main/LinaRVC.zip"
     },
     {
-      "id": "pudge",
-      "name": "Pudge",
-      "transpose": 12
+      "id":"Anti-mage",
+      "name":"Anti-Mage", 
+      "transpose": 12,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/AntiMageRVC/resolve/main/AntiMage380.zip"
     },
     {
-      "id": "monkey_king",
-      "name": "Monkey King",
-      "transpose": 12
+      "name": "Crystal Maiden",
+      "id": "crystal-maiden",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/CrystalMaidenRVC/resolve/main/CrystalMaidenRVC.zip"
     }
   ]
 }
