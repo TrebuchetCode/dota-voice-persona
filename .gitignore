@@ -1,0 +1,6 @@
+venv/
+outputs/
+*.index
+*.pth
+*.pt
+*.onnx
