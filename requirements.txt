@@ -1,6 +1,14 @@
-# Standard PyPI packages
+# Core RVC stack
 rvc-python==0.1.5
 numpy==1.23.5
 scipy
 librosa
-customtkinter
+
+# Server
+fastapi
+uvicorn
+python-multipart
+
+# UI
+flet
+httpx

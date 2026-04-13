@@ -4,19 +4,50 @@
       "id": "lina",
       "name": "Lina",
       "transpose": 0,
-      "zip_url": "https://huggingface.co/GoodGuideGreg/LinaRVC/resolve/main/LinaRVC.zip"
+      "zip_url": "https://huggingface.co/GoodGuideGreg/LinaRVC/resolve/main/LinaRVC.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/lina.png"
     },
     {
-      "id":"Anti-mage",
-      "name":"Anti-Mage", 
+      "id": "Anti-mage",
+      "name": "Anti-Mage",
       "transpose": 12,
-      "zip_url": "https://huggingface.co/GoodGuideGreg/AntiMageRVC/resolve/main/AntiMage380.zip"
+      "zip_url": "https://huggingface.co/GoodGuideGreg/AntiMageRVC/resolve/main/AntiMage380.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/antimage.png"
     },
     {
-      "name": "Crystal Maiden",
       "id": "crystal-maiden",
+      "name": "Crystal Maiden",
       "transpose": 0,
-      "zip_url": "https://huggingface.co/GoodGuideGreg/CrystalMaidenRVC/resolve/main/CrystalMaidenRVC.zip"
+      "zip_url": "https://huggingface.co/GoodGuideGreg/CrystalMaidenRVC/resolve/main/CrystalMaidenRVC.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/crystal_maiden.png"
+    },
+    {
+      "id": "primal-beast",
+      "name": "Primal Beast",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/Swordsmagus/DOTA-2-RVC/resolve/main/Dota2-Primal-Beast_e375.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/primal_beast.png"
+    },
+    {
+      "id": "vengeful-spirit",
+      "name": "Vengeful Spirit",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/Swordsmagus/DOTA-2-RVC/resolve/main/Dota2-Vengeful-Spirit-Arcana.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/vengefulspirit.png"
+    },
+    {
+      "id": "pangolier",
+      "name": "Pangolier",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/Swordsmagus/DOTA-2-RVC/resolve/main/dota-2-pangolier-450epoch.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/pangolier.png"
+    },
+    {
+      "id": "treant-protector",
+      "name": "Treant Protector",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/hedfkoa/rvc-dota-2/resolve/main/treant-protector-ru%20100%20epochs%2040k%20v2.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/treant.png"
     }
   ]
 }
