@@ -19,7 +19,10 @@ ROOT = Path(__file__).parent
 ASSETS_DIR = ROOT / "assets"
 MODELS_DIR = ROOT / "models"
 OUTPUTS_DIR = ROOT / "outputs"
-MANIFEST = ROOT / "heroes.json"
+DATA_DIR = ROOT / "data"
+MANIFEST = DATA_DIR / "heroes.json"
+COMMUNITY_INSTALLED = DATA_DIR / "community_installed.json"
+USER_PREFS = DATA_DIR / "user_prefs.json"
 
 BASE_ASSETS = {
     "hubert_base.pt": "https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt",
@@ -36,13 +39,67 @@ def ensure_dirs() -> None:
 
 
 def load_manifest() -> list[dict]:
+    """Return the merged list of built-in heroes plus any community heroes
+    the user has installed locally. Built-in IDs win on collision."""
     with open(MANIFEST) as f:
-        return json.load(f)["heroes"]
+        heroes = json.load(f)["heroes"]
+    if COMMUNITY_INSTALLED.exists():
+        try:
+            with open(COMMUNITY_INSTALLED) as f:
+                community = json.load(f).get("heroes", [])
+        except (json.JSONDecodeError, OSError):
+            community = []
+        existing_ids = {h["id"] for h in heroes}
+        heroes.extend(h for h in community if h["id"] not in existing_ids)
+    return heroes
+
+
+def save_community_hero(hero: dict) -> None:
+    """Persist a community hero dict to community_installed.json. Idempotent."""
+    if COMMUNITY_INSTALLED.exists():
+        try:
+            with open(COMMUNITY_INSTALLED) as f:
+                data = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            data = {"heroes": []}
+    else:
+        data = {"heroes": []}
+    if not any(h["id"] == hero["id"] for h in data.get("heroes", [])):
+        data.setdefault("heroes", []).append(hero)
+        COMMUNITY_INSTALLED.parent.mkdir(parents=True, exist_ok=True)
+        with open(COMMUNITY_INSTALLED, "w") as f:
+            json.dump(data, f, indent=2)
 
 
 def hero_status(hero: dict) -> Literal["installed", "missing"]:
     pth = MODELS_DIR / hero["id"] / f"{hero['id']}.pth"
     return "installed" if pth.exists() else "missing"
+
+
+# --- user prefs (per-hero pitch memory) --------------------------------------
+
+def _load_prefs() -> dict:
+    if not USER_PREFS.exists():
+        return {}
+    try:
+        with open(USER_PREFS) as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def get_user_transpose(hero_id: str, default: int = 0) -> int:
+    """Return the last pitch-shift (semitones) the user chose for this hero,
+    or `default` (typically heroes.json's own `transpose`) if none."""
+    return int(_load_prefs().get("transpose", {}).get(hero_id, default))
+
+
+def save_user_transpose(hero_id: str, transpose: int) -> None:
+    prefs = _load_prefs()
+    prefs.setdefault("transpose", {})[hero_id] = int(transpose)
+    USER_PREFS.parent.mkdir(parents=True, exist_ok=True)
+    with open(USER_PREFS, "w") as f:
+        json.dump(prefs, f, indent=2)
 
 
 def download_file(

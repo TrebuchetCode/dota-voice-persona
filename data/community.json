@@ -1,0 +1,112 @@
+{
+  "community_heroes": [
+    {
+      "id": "rubick",
+      "name": "Rubick",
+      "author": "GoodGuideGreg",
+      "description": "Grand Magus, trained for 1000 epochs",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/RubickRVC/resolve/main/Rubick1000e.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/rubick.png"
+    },
+    {
+      "id": "meepo",
+      "name": "Meepo",
+      "author": "GoodGuideGreg",
+      "description": "The Geomancer",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/MeepoRVC/resolve/main/MeepoRVC.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/meepo.png"
+    },
+    {
+      "id": "earthshaker",
+      "name": "Earthshaker",
+      "author": "GoodGuideGreg",
+      "description": "Raigor Stonehoof",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/Earthshaker/resolve/main/EarthshakerRVC.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/earthshaker.png"
+    },
+    {
+      "id": "witch-doctor",
+      "name": "Witch Doctor",
+      "author": "GoodGuideGreg",
+      "description": "Zharvakko the Witch Doctor",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/WitchDoctorRVC/resolve/main/WitchDoctorRVC.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/witch_doctor.png"
+    },
+    {
+      "id": "bane",
+      "name": "Bane",
+      "author": "GoodGuideGreg",
+      "description": "Atropos, the Nightmare King",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/BaneRVC/resolve/main/BaneRVC.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/bane.png"
+    },
+    {
+      "id": "legion-commander",
+      "name": "Legion Commander",
+      "author": "GoodGuideGreg",
+      "description": "Tresdin, trained for 800 epochs",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/LegionCommanderRVC/resolve/main/LegionCommander800e.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/legion_commander.png"
+    },
+    {
+      "id": "wraith-king",
+      "name": "Wraith King",
+      "author": "GoodGuideGreg",
+      "description": "Ostarion, trained for 500 epochs",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/WraithKingRVC/resolve/main/WraithKingRVC500e.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/skeleton_king.png"
+    },
+    {
+      "id": "venomancer",
+      "name": "Venomancer",
+      "author": "GoodGuideGreg",
+      "description": "Lesale Deathbringer",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/VenomancerRVC/resolve/main/VenoRVC.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/venomancer.png"
+    },
+    {
+      "id": "centaur-warrunner",
+      "name": "Centaur Warrunner",
+      "author": "GoodGuideGreg",
+      "description": "Bradwarden, trained for 400 epochs",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/CentuarWarrunnerRVC/resolve/main/CentaurWarrunner400.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/centaur.png"
+    },
+    {
+      "id": "alchemist",
+      "name": "Alchemist",
+      "author": "GoodGuideGreg",
+      "description": "Razzil Darkbrew, trained for 400 epochs",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/AlchemistAl400/resolve/main/AlchemistRVC400.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/alchemist.png"
+    },
+    {
+      "id": "techies",
+      "name": "Techies",
+      "author": "GoodGuideGreg",
+      "description": "Squee, Spleen, and Spoon",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/GoodGuideGreg/Techies/resolve/main/TechiesRVC.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/techies.png"
+    },
+    {
+      "id": "sniper",
+      "name": "Sniper",
+      "author": "hobqueer",
+      "description": "Kardel Sharpeye",
+      "transpose": 0,
+      "zip_url": "https://huggingface.co/hobqueer/SniperRVC/resolve/main/Sniper.zip",
+      "portrait_url": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/sniper.png"
+    }
+  ]
+}

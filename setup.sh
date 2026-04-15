@@ -3,10 +3,6 @@
 # Ensure script stops on errors
 set -e
 
-# 1. Pick a Python interpreter that is NOT the CommandLineTools system Python.
-#    The CLT Python is built against an old macOS SDK and crashes recent native
-#    wheels with "macOS 26 (2603) or later required". Prefer Homebrew python3.10,
-#    then python3.11, then any python3 that isn't /Library/Developer/CommandLineTools.
 PYTHON_BIN=""
 for candidate in /opt/homebrew/bin/python3.10 /opt/homebrew/bin/python3.11 \
                  /usr/local/bin/python3.10 /usr/local/bin/python3.11 \
@@ -30,9 +26,7 @@ fi
 PYTHON_VER=$("$PYTHON_BIN" -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
 echo "Using Python $PYTHON_VER at $PYTHON_BIN"
 
-# Homebrew's python@3.x doesn't bundle Tcl/Tk, so customtkinter import fails
-# with "No module named '_tkinter'". Install the matching python-tk formula
-# if the interpreter is from Homebrew and _tkinter isn't already importable.
+
 if ! "$PYTHON_BIN" -c 'import _tkinter' >/dev/null 2>&1; then
     if [[ "$PYTHON_BIN" == /opt/homebrew/* || "$PYTHON_BIN" == /usr/local/* ]]; then
         if command -v brew >/dev/null 2>&1; then
@@ -47,7 +41,6 @@ if ! "$PYTHON_BIN" -c 'import _tkinter' >/dev/null 2>&1; then
 fi
 
 echo "[1/4] Creating Venv..."
-# If an existing venv was built with a different / broken interpreter, rebuild it.
 if [ -d "venv" ]; then
     EXISTING_VER=$(venv/bin/python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")' 2>/dev/null || echo "")
     if [ "$EXISTING_VER" != "$PYTHON_VER" ]; then
@@ -75,7 +68,7 @@ pip install torch==2.1.1 torchaudio==2.1.1 --index-url https://download.pytorch.
 pip install requests urllib3 packaging "setuptools<81" darkdetect typing-extensions av tqdm colorama \
     faiss-cpu==1.7.3 soundfile pyworld==0.3.5 praat-parselmouth ffmpeg-python torchcrepe \
     fairseq==0.12.2 omegaconf==2.0.6 pydantic==2.5.2 tensorboardX \
-    fastapi uvicorn python-multipart flet httpx
+    fastapi uvicorn python-multipart flet httpx pygame
 
 # Replace pyworld's deprecated pkg_resources version lookup with importlib.metadata.
 "$PYTHON_BIN" -c "import pathlib;p=pathlib.Path('venv/lib/python${PYTHON_VER}/site-packages/pyworld/__init__.py');p.exists() and p.write_text(p.read_text().replace('import pkg_resources','import importlib.metadata').replace(\"pkg_resources.get_distribution('pyworld').version\",\"importlib.metadata.version('pyworld')\"))"

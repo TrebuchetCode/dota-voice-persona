@@ -12,3 +12,4 @@ python-multipart
 # UI
 flet
 httpx
+pygame      # audio playback (mixer.music — supports seek + volume)

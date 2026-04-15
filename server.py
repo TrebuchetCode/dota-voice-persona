@@ -41,8 +41,9 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Optional
 
+import requests
 import rvc_python
-from fastapi import FastAPI, Form, HTTPException, UploadFile
+from fastapi import Body, FastAPI, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from rvc_python.infer import RVCInference
 
@@ -54,6 +55,9 @@ MODELS_DIR = ROOT / "models"
 
 HOST = "127.0.0.1"
 PORT = 8765
+
+COMMUNITY_URL = "https://raw.githubusercontent.com/TrebuchetCode/dota-voice-persona/main/community.json"
+COMMUNITY_LOCAL = ROOT / "data" / "community.json"
 
 
 def _patch_rvc_assets() -> None:
@@ -91,7 +95,13 @@ class Engine:
             self.rvc = RVCInference(device="cpu")
         self.ready = True
 
-    def convert(self, hero: dict, input_path: Path, output_path: Path) -> None:
+    def convert(
+        self,
+        hero: dict,
+        input_path: Path,
+        output_path: Path,
+        transpose: Optional[int] = None,
+    ) -> None:
         with self.lock:
             assert self.rvc is not None, "engine not initialized"
             hero_id = hero["id"]
@@ -103,7 +113,10 @@ class Engine:
                 self.rvc.load_model(str(pth_path))
                 self.loaded_hero = hero_id
 
-            self.rvc.f0_up_key = hero.get("transpose", 0)
+            # Explicit `transpose` overrides the hero's default semitone shift.
+            self.rvc.f0_up_key = (
+                int(transpose) if transpose is not None else hero.get("transpose", 0)
+            )
             self.rvc.f0_method = "rmvpe"
             self.rvc.infer_file(str(input_path), str(output_path))
 
@@ -165,9 +178,68 @@ def health():
 @app.get("/heroes")
 def list_heroes():
     return [
-        {**h, "installed": downloader.hero_status(h) == "installed"}
+        {
+            **h,
+            "installed": downloader.hero_status(h) == "installed",
+            # Saved user pitch, falling back to the manifest's default.
+            "user_transpose": downloader.get_user_transpose(
+                h["id"], default=h.get("transpose", 0),
+            ),
+        }
         for h in downloader.load_manifest()
     ]
+
+
+@app.post("/heroes/{hero_id}/prefs")
+def save_prefs(hero_id: str, transpose: int = Body(..., embed=True)):
+    _find_hero(hero_id)  # validate existence
+    # Clamp to a sane range so we don't save nonsense.
+    transpose = max(-24, min(24, int(transpose)))
+    downloader.save_user_transpose(hero_id, transpose)
+    return {"status": "saved", "transpose": transpose}
+
+
+@app.get("/community/browse")
+def browse_community():
+    """Return community models not already known. Tries remote GitHub first,
+    falls back to a local community.json (useful during development)."""
+    remote: list[dict] = []
+    remote_err: Optional[str] = None
+    try:
+        r = requests.get(COMMUNITY_URL, timeout=10)
+        r.raise_for_status()
+        remote = r.json().get("community_heroes", [])
+    except Exception as exc:
+        remote_err = str(exc)
+
+    if not remote and COMMUNITY_LOCAL.exists():
+        try:
+            import json as _json
+            with open(COMMUNITY_LOCAL) as f:
+                remote = _json.load(f).get("community_heroes", [])
+        except Exception as exc:
+            if remote_err is None:
+                remote_err = str(exc)
+
+    if not remote:
+        raise HTTPException(502, f"No community source available: {remote_err}")
+
+    known_ids = {h["id"] for h in downloader.load_manifest()}
+    return [h for h in remote if h["id"] not in known_ids]
+
+
+@app.post("/community/register")
+def register_community_hero(hero: dict = Body(...)):
+    """Persist a community hero dict so it's findable by install/convert flows."""
+    required = {"id", "name", "zip_url", "portrait_url"}
+    missing = required - set(hero.keys())
+    if missing:
+        raise HTTPException(400, f"Missing fields: {sorted(missing)}")
+    existing_ids = {h["id"] for h in downloader.load_manifest()}
+    if hero["id"] in existing_ids:
+        raise HTTPException(409, f"Hero {hero['id']} already registered")
+    downloader.save_community_hero(hero)
+    return {"status": "registered", "id": hero["id"]}
 
 
 def _find_hero(hero_id: str) -> dict:
@@ -207,7 +279,11 @@ def install_status(hero_id: str):
 
 
 @app.post("/convert")
-async def convert(hero_id: str = Form(...), audio: UploadFile = ...):
+async def convert(
+    hero_id: str = Form(...),
+    audio: UploadFile = ...,
+    transpose: Optional[int] = Form(None),
+):
     if not engine.ready:
         raise HTTPException(503, "Engine not ready")
     hero = _find_hero(hero_id)
@@ -223,7 +299,9 @@ async def convert(hero_id: str = Form(...), audio: UploadFile = ...):
     output_path = OUTPUTS_DIR / output_filename
 
     try:
-        await asyncio.to_thread(engine.convert, hero, input_path, output_path)
+        await asyncio.to_thread(
+            engine.convert, hero, input_path, output_path, transpose,
+        )
     finally:
         input_path.unlink(missing_ok=True)
 

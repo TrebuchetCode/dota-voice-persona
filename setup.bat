@@ -9,7 +9,7 @@ venv\Scripts\python.exe -m pip install "pip<24.1"
 echo [2/3] Installing Required Audio and AI components...
 :: torch needs a separate index, and rvc-python needs --no-deps; everything else merges.
 venv\Scripts\pip.exe install torch==2.1.1 torchaudio==2.1.1 --index-url https://download.pytorch.org/whl/cpu
-venv\Scripts\pip.exe install requests urllib3 packaging "setuptools<81" darkdetect typing-extensions av tqdm colorama faiss-cpu==1.7.3 soundfile librosa==0.11.0 pyworld==0.3.5 praat-parselmouth ffmpeg-python torchcrepe fairseq==0.12.2 omegaconf==2.0.6 pydantic==2.5.2 tensorboardX fastapi uvicorn python-multipart flet httpx
+venv\Scripts\pip.exe install requests urllib3 packaging "setuptools<81" darkdetect typing-extensions av tqdm colorama faiss-cpu==1.7.3 soundfile librosa==0.11.0 pyworld==0.3.5 praat-parselmouth ffmpeg-python torchcrepe fairseq==0.12.2 omegaconf==2.0.6 pydantic==2.5.2 tensorboardX fastapi uvicorn python-multipart flet httpx pygame
 venv\Scripts\pip.exe install --no-deps rvc-python==0.1.5
 
 :: Replace pyworld's deprecated pkg_resources version lookup with importlib.metadata.
